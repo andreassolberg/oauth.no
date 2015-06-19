@@ -1,0 +1,67 @@
+<!-- Footer
+================================================== -->
+<footer class="bs-docs-footer" role="contentinfo">
+  <div class="container">
+
+    <!-- <p>Connect is currently under development.</p> -->
+
+    <ul class="bs-docs-footer-links muted">
+      <li>OAuth.no</li>
+      <li>&middot;</li>
+      <li><a href="http://www.uninett.no">UNINETT AS</a></li>
+      <li>&middot;</li>
+      <li> <i class="fa fa-linkedin"></i></i> <a href="https://no.linkedin.com/in/andreassolberg">Andreas Åkre Solberg</a></li>
+      <li>&middot;</li>
+      <li> <i class="fa fa-twitter"></i></i><a href="https://twitter.com/@erlang">erlang</a> </li><!--
+      <li>&middot;</li>
+      <li><a href="http://jso.uninett.no">jso</a></li>
+      <li>&middot;</li>
+      <li><a href="http://simplesamlphp.org">simpleSAMLphp</a></li>
+      <li>&middot;</li>
+      <li><a href="http://discojuice.org">DiscoJuice</a></li>
+      <li>&middot;</li>
+      <li><a href="http://httpjs.net">httpjs</a></li>
+-->
+    </ul>
+  </div>
+</footer>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+
+
+<script src="/bower_components/bootstrap/dist/js/bootstrap.js"></script>
+
+
+
+{% if site.github %}
+<script src="/assets/js/docs.min.js"></script>
+{% else %}
+<script src="/assets/js/vendor/holder.js"></script>
+<script src="/assets/js/vendor/ZeroClipboard.min.js"></script>
+<script src="/assets/js/src/application.js"></script>
+{% endif %}
+{% if page.slug == "customize" %}
+<script src="/assets/js/customize.min.js"></script>
+{% endif %}
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="/assets/js/ie10-viewport-bug-workaround.js"></script>
+
+<!-- Piwik -->
+<script type="text/javascript">
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u="//piwik.uninett.no/";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', 8]);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+</script>
+<noscript><p><img src="//piwik.uninett.no/piwik.php?idsite=8" style="border:0;" alt="" /></p></noscript>
+<!-- End Piwik Code -->

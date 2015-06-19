@@ -1,0 +1,65 @@
+<header class="navbar navbar-default navbar-static-top bs-docs-nav" id="top" role="banner">
+	<div class="container-fluid">
+
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
+			<a class="navbar-brand" href="/"><img src="/bower_components/uninett-theme/images/UNINETT_logo.svg" alt="Uninett logo" type="image/svg+xml"></a>
+		</div>
+
+		<div class="navbar-department">
+			<a href="/"><div class="department">OAuth.no</div></a>
+		</div>
+
+		<nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
+
+			<ul class="nav navbar-nav">
+
+
+
+
+				<li{% if page.slug == "status" %} class="active"{% endif %}>
+					<a href="/widgets/">Federated Widgets</a>
+				</li>
+
+				<li{% if page.slug == "prosjekt" %} class="active"{% endif %}>
+					<a href="/jso/">JSO</a>
+				</li>
+
+				<li{% if page.slug == "utvikling" %} class="active"{% endif %}>
+					<a target="" href="/openid/">OpenID Connect</a>
+				</li>
+
+
+
+
+<!--         <li{% if page.slug == "utrulling" %} class="active"{% endif %}>
+					<a target="#" class="" href="/utrulling/">Utrulling</a>
+				</li> -->
+
+
+
+
+<!--
+
+				<li{% if page.slug == "css" %} class="active"{% endif %}>
+					<a target="_blank" href="{{ site.dev }}">Developer Dashboard</a>
+				</li>
+
+
+				<li{% if page.slug == "groups" %} class="active"{% endif %}>
+					<a target="_blank" href="{{ site.groups }}">Groups</a>
+				</li>
+-->
+			</ul>
+
+			<ul class="nav navbar-nav navbar-right" style="">
+	 <!--     <li data-toggle="tooltip" data-placement="left" title="Not yet available. Stay tuned" ><button  style="margin-top: 8px" class="btn btn-default" href="#">Login</button></li>-->
+				<!-- <li><a href="http://talk.uninettlabs.no">Community</a></li> -->
+
+				<li><a href="http://feideconnect.no/">Feide Connect</a></li>
+				<li style="width: 3em"><a href="">&nbsp;</a></li>
+			</ul>
+
+		</nav>
+	</div>
+</header>
