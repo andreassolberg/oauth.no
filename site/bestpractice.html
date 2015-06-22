@@ -1,0 +1,117 @@
+---
+layout: default
+title: OAuth 2.0 Best Practice
+slug: bestpractice
+---
+
+
+<div class="bs-docs-section">
+
+	<div class="row">
+		<div class="col-md-12">
+
+			<h1 id="" class="page-header">OAuth 2.0 Best Practice</h1>
+			
+			<p>...</p>
+
+		</div>
+	</div>
+
+
+
+	<div class="row">
+		<div class="col-md-12">
+
+			<h2 id="token-expiration" class="page-header">Token expiration – as seen from the consumer</h2>			
+
+			<p><i>This text is <a href="https://rnd.feide.no/2012/04/19/best-practice-for-dealing-with-oauth-2-0-token-expiration-at-the-consumer/">based upon some research done in April 2012</a>, and is copied to oauth.no in June 2015. Since then, the spec has evolved to be much clearer about this.</i></p>
+
+			<p>Not dealing properly with token validity can cause rare and unwanted effects for end-users. You don&#8217;t want to do that. This documents tries to sum up the best practice on this.</p>
+
+
+
+			<h3>Estimate the validity period of an obtained token</h3>
+
+			<p>When the consumer obtains a new access token, it will usually store the token in some storage for potential future use. It is very reccomended to also estimate the validity period for a token when sent to storage, in order to know that the token is expired without the need to &#8220;test&#8221; it.</p>
+
+			<p>At the time the consumer receives an access token response, the validity period of the token can be decided using any of these indicators, in the given order:</p>
+
+			<ul>
+			<li>The <code>expires_in</code> property in the <em>access token response</em>. This value is reccomended to be included by the provider.</li>
+			<li>A special <em>scope</em> indicating validity period of the token. In example a scope <code>offline</code> may be defined to mean infinite validity.</li>
+			<li>A <em>default value of validity period</em>, typically per provider.</li>
+			<li>A default value of the consumer implementation, if none of the above is given. It may be infinite, or it may be a limited period.</li>
+			</ul>
+
+			<p>Note 1: there is no way to indicate infinite validity period in the <code>expires_in</code> property (unfortunately).</p>
+
+			<p>Note 2: Of the indicators listed above, only the <code>expires_in</code> parameter is obtained in a standarized way. All other parameters are somehow configured in the client, based upon textual documentation of the provider API, or out of band agreements.</p>
+
+			<h3>Detecting an expired tokens when using it</h3>
+
+			<p>Even if you follow best-practice to associate a stored access token with a validity period, for a number of reasons you also should be able to deal with the fact that the token is invalid even if you assume it is valid:</p>
+
+			<ul>
+			<li>the <a href="http://tools.ietf.org/html/draft-ietf-oauth-v2">OAuth spec</a> does not provide measures to protect against clock skew</li>
+			<li>as all of the indicators (except <code>expires_in</code>) are defined in documentation, out of band or manually entered, if the default value of the provider changes, the consumer is unlikely to adopt to the new validity period immediately.</li>
+			<li>the token may be invalidated by other means at the provider than expiration. There is no mechamisms built in for notifying the consumer about a token being invalidated.</li>
+			</ul>
+
+			<p>Consequently, a consumers will have to deal with the situation of using an expired token.</p>
+
+			<p>First, it is <strong>extremely important</strong> that the consumer is able to detect the difference between generic errors at the protected endpoint and errors due to an expired token. If and only if the token is expired it is very important that the consumer uses the refresh token or starts a new flow to obtain a new valid token.</p>
+
+			<p>The <a href="http://tools.ietf.org/html/draft-ietf-oauth-v2">OAuth 2.0 Core spec</a> does not mention with a single word how to detect expired tokens. Instead this is discussed in each of the token type specs, including the popular <a href="http://self-issued.info/docs/draft-ietf-oauth-v2-bearer.html#authn-header">Bearer Tokens</a>.</p>
+
+			<p>For the bearer tokens, an expired token will result in the following response from a protected endpoint:</p>
+
+{% highlight http %}
+HTTP/1.1 401 Unauthorized 
+	WWW-Authenticate: Bearer realm="example", 
+		error="invalid_token", 
+		error_description="The access token expired"
+{% endhighlight %}
+
+			<p>The consumer should check for both the status code 401, and that the <code>error</code> field is set to <code>invalid_token</code> before requesting a new token from the provider.</p>
+
+			<h3>Facebook</h3>
+
+			<p>Facebook claims to be using OAuth 2.0 for its graph API. OAuth 2.0 library writers will have to balance facebook and spec compliance with care.</p>
+
+			<p>When a consumer uses an expired token, Facebook responds with:</p>
+
+{% highlight http %}
+HTTP/1.1 400 Bad Request
+	WWW-Authenticate: OAuth "Facebook Platform" "invalid_token" 
+		"Error validating access token: Session has expired 
+		at unix time 1334415600. The current unix time is 1334822619."
+{% endhighlight %}
+
+
+
+			<p>It could be tempting to treat all 4XX responses as expired tokens, but that is not reccomended.</p>
+
+			<p>Instead I would provide a specific fallback for Facebook, like this:</p>
+
+
+{% highlight plain %}
+if (status_code === 401 and (parsed_www_authenticate["error"] === "invalid_token"))
+    throw new InvalidTokenException();
+if (status_code === 400 and 
+        (www_authenticate contains 'OAuth "Facebook Platform" "invalid_token"'))
+    throw new InvalidTokenException();
+{% endhighlight %}
+
+			<h3>Other broken providers</h3>
+
+			<p>If you know about other popular providers that do not follow the specification on expired tokens, <a href="mailto:andreas.solberg@uninett.no">contact me</a> and I&#8217;ll adjust this document.</p>
+
+
+
+
+		</div>
+	</div>
+
+
+</div>
+
