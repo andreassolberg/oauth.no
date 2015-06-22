@@ -1,0 +1,224 @@
+---
+layout: default
+title: Fedeated Widgets
+slug: jso
+lead: "Teknisk innblikk i Feide Connect på SUHS 2014"
+---
+
+
+<div class="bs-docs-section">
+
+	<div class="row">
+		<div class="col-md-12">
+
+			<p class="pull-right" style="margin-top: 15px"><a href="https://github.com/andreassolberg/jso/tree/version3"><i class="fa fa-github"></i> github/andreassolberg/jso</a></p>
+
+			<h1 id="" class="page-header">JSO</h1>
+			<p class="lead">a robust, flexible and secure OAuth and OpenID Connect javascript library.</p>
+
+
+			<div class="bs-callout bs-callout-danger" id="">
+				<h4>Version 3 - beta</h4>
+				<p>This site is referring to the latest generation 3 of the JSO library.</p>
+				<p>Currently it is less table than the <a href="https://github.com/andreassolberg/jso"><i class=" fa fa-github"></i> stable branch</a>.</p>
+			</div>
+
+
+
+			<p>Getting started.</p>
+
+
+
+
+			<p>This is a guide to get started using JSO. </p>
+
+			<p>Pleae report to the [issue tracker]() if you discover errors in the documentation or the software.</p>
+
+
+			<p>If you want to use JSO together with Phonegap to support OAuth 2.0 in a hybrid web application, you may want to read the</p>
+
+			<p>* [JSO Phonegap Guide](README-Phonegap.md)</p>
+
+
+
+
+
+
+
+
+
+			<h2 id="" class="page-header">Getting JSO</h2>
+
+			<p>Preferrably you may obtain JSO using <a href="http://bower.io">bower.io</a>.</p>
+
+{% highlight bash %}
+bower install jso --save
+{% endhighlight %}
+
+			<p>Alternatively, you may obtain the source from github by downloading or cloning the source.</p>
+
+			<p>Currently, JSO is not available through any CDN.</p>
+
+
+
+
+
+
+
+
+			<h2 id="" class="page-header">Loading JSO</h2>
+
+
+			<p>Once you got JSO locally, you'll need to load the library in your web application.</p>
+
+{% highlight html %}
+<script type="text/javascript" src="bower_components/jso/build/jso.js"></script>
+{% endhighlight %}
+	
+
+	<p>If you use [requirejs](http://require.js), you may load the library like this:</p>
+
+{% highlight javascript %}
+define(function(require, exports, module) {
+	var JSO = require("bower/jso/build/jso");
+	// ...
+});
+{% endhighlight %}
+
+	<p>If you would like to fork the library, modify or contribute to development, you must use should use AMD loading, and refer to the `src/jso` version, like this:</p>
+
+{% highlight javascript %}
+var JSO = require("bower/jso/src/jso");
+{% endhighlight %}
+
+
+
+
+
+
+
+
+
+
+			<h2 id="" class="page-header">Using JSO</h2>
+
+
+
+
+<p>To start using JSO, you need to initialize a new JSO object with configuration for an OAuth 2.0 Provider:</p>
+
+{% highlight javascript %}
+var jso = new JSO({
+    providerID: "google",
+    client_id: "541950296471.apps.googleusercontent.com",
+    redirect_uri: "http://bridge.uninett.no/jso/index.html",
+    authorization: "https://accounts.google.com/o/oauth2/auth",
+    scopes: { request: ["https://www.googleapis.com/auth/userinfo.profile"]}
+});
+{% endhighlight %}
+
+
+<p>Here are more options to JSO:</p>
+
+<ul>
+<li>
+<code>providerID</code>: OPTIONAL This is just a name tag that is used to prefix data stored in the browser. It can be anything you'd like :)</li>
+<li>
+<code>client_id</code>: The client idenfier of your client that as trusted by the provider. As JSO uses the implicit grant flow, there is now use for a </li>
+<li>
+<code>redirect_uri</code>: OPTIONAL (may be needed by the provider). The URI that the user will be redirected back to when completed. This should be the same URL that the page is presented on.</li>
+<li>
+<code>presenttoken</code>: OPTIONAL How to present the token with the protected calls. Values can be <code>qs</code> (in query string) or <code>header</code> (default; in authorization header).</li>
+<li>
+<code>default_lifetime</code> : OPTIONAL Seconds with default lifetime of an access token. If set to <code>false</code>, it means permanent.</li>
+<li>
+<code>permanent_scope</code>: A scope that indicates that the lifetime of the access token is infinite. (not yet tested.)</li>
+<li>
+<code>isDefault</code>: Some OAuth providers does not support the <code>state</code> parameter. When this parameter is missing, the consumer does not which provider that is sending the access_token. If you only provide one provider config, or set isDefault to <code>true</code> for one of them, the consumer will assume this is the provider that sent the token.</li>
+<li>
+<code>scope</code>: For providers that does not support <code>state</code>: If state was not provided, and default provider contains a scope parameter we assume this is the one requested... Set this as the same list of scopes that you provide to <code>ensure_tokens</code>.</li>
+<li>
+<code>scopes.request</code>: Control what scopes are requested in the authorization request.</li>
+<li>
+<code>debug</code>: If debug is set to true, verbose logging will make it easier to debug problems with JSO.</li>
+</ul>
+
+
+
+
+
+
+
+
+<h2>
+<a id="user-content-catching-the-response-when-the-user-is-returning" class="anchor" href="#catching-the-response-when-the-user-is-returning" aria-hidden="true"><span class="octicon octicon-link"></span></a>Catching the response when the user is returning</h2>
+
+<p>On the page (usually the same) that the user is sent back to after authorization, typically the <code>redirect_uri</code> endpoint, you would need to call the <code>callback</code>-function on JSO to tell it to check for response parameters:</p>
+
+<div class="highlight highlight-javascript"><pre>    jso.callback();</pre></div>
+
+<p>Be aware to run the <code>callback()</code> function early, and before you <em>router</em> and before you start using the jso object to fetch data.</p>
+
+<h2>
+<a id="user-content-configuration" class="anchor" href="#configuration" aria-hidden="true"><span class="octicon octicon-link"></span></a>Configuration</h2>
+
+<p>The simplest way to get data, is to use the <code>.ajax()</code> function that wraps the jQuery <code>.ajax()</code> familiar to many. </p>
+
+<ul>
+<li><a href="http://api.jquery.com/jquery.ajax/">Documentation of jquery .ajax()</a></li>
+</ul>
+
+<p>In order to use this wrapper, you need to point JSO to your jQuery object:</p>
+
+<pre><code>JSO.enablejQuery($);
+</code></pre>
+
+<p>Note that you need to call this on the <code>JSO</code> object, and not on your <code>jso</code> instance.</p>
+
+<p>Now, you may start fetching data:</p>
+
+
+{% highlight javascript %}
+jso.ajax({
+	url: "https://www.googleapis.com/oauth2/v1/userinfo",
+	oauth: {
+		scopes: {
+			request: ["https://www.googleapis.com/auth/userinfo.email"],
+			require: ["https://www.googleapis.com/auth/userinfo.email"]
+		}
+	},
+	dataType: 'json',
+	success: function(data) {
+		console.log("Response (google):");
+		console.log(data);
+		$(".loader-hideOnLoad").hide();
+	}
+});
+{% endhighlight %}
+
+
+<p>The <code>oauth</code> option property merges (and overrides) with the configuration of the <code>jso</code> object.</p>
+
+<h2>
+<a id="user-content-getting-the-token" class="anchor" href="#getting-the-token" aria-hidden="true"><span class="octicon octicon-link"></span></a>Getting the token</h2>
+
+<p>You may avoid using jQuery, and handle the access token all by your self. To get an token, use the <code>getToken</code> function:</p>
+
+{% highlight javascript %}
+jso.getToken(function(token) {
+    console.log("I got the token: ", token);
+}, opts);
+{% endhighlight %}
+
+<p>You may also ensure that a token is available early in your application, to force all user interaction and redirection to happen before your application is fully loaded. To do that make a call to getToken, and wait for the callback before you continue.</p>
+
+<h2><a id="user-content-logout" class="anchor" href="#logout" aria-hidden="true"><span class="octicon octicon-link"></span></a>Logout</h2>
+
+<p>You may wipe all stored tokens, in order to simulate a <em>logout</em> experience:</p>
+
+<pre><code>jso.wipeTokens();
+</code></pre>
+
+
+
+

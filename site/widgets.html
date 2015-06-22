@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Fedeated Widgets
-slug: suhs
+slug: widgets
 lead: "Teknisk innblikk i Feide Connect på SUHS 2014"
 ---
 
@@ -28,10 +28,27 @@ lead: "Teknisk innblikk i Feide Connect på SUHS 2014"
 			 </p>
 			<p>This article describes one way or approaching this concept in a way that treats the user well, and makes use of various tweaks of web technology / javascript, </p>
 
+
+
+
 		</div>
 		<div class="col-md-6">
 			
 			<p><img class="img-responsive" src="/media/figures/widgets.png"></p>
+		</div>
+
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			
+
+			<p>Some of the features of this flow:</p>
+
+			<ul class="uninett-ul">
+				<li class="uninett-ul-li">Will allow you to be automatically signed in to the widget if you have a signle sign-on session at the IdP</li>
+				<li class="uninett-ul-li">Will not reload the widget at any time after the first load. Neigther when using the popup loader or the hidden iframe loader. Smooth!</li>
+			</ul>
+
 		</div>
 
 	</div>
@@ -42,11 +59,123 @@ lead: "Teknisk innblikk i Feide Connect på SUHS 2014"
 
 
 <div class="bs-docs-section">
-	<h2 id="test" class="page-header">Basic flow</h2>
 
 
-	<p>-..</p>
+
+	<h2 id="test" class="page-header">Basic flow description</h2>
+
+
+	<p>At the initial page load of the main site, this is the overall flow:</p>
+
+	<ul class="uninett-ul">
+		<li class="uninett-ul-li">Main site loads</li>
+		<li class="uninett-ul-li">Federated Widget loads within, and requires the user to be authenticated in order to present the content.</li>
+		<li class="uninett-ul-li">Federated Widget checks for cached OAuth 2.0 tokens, if an cached OAuth 2.0 token was found, then: </li>
+		<ul class="uninett-ul">
+			<li class="uninett-ul-li">Use the access token to perform a CORS request to the userinfo endpoint.</li>
+			<li class="uninett-ul-li">Validate the response, and the user is now authenticated.</li>
+		</ul>
+
+		<li class="uninett-ul-li">If no token was cached, fire up the hidden iframe loader and prepare it with an OAuth 2.0 authorization request, or even better an OpenID authentication request. The most important part is to indicate the passive mode, using in example: <code>prompt=none</code>.</li>
+		<ul class="uninett-ul">
+			<li class="uninett-ul-li">detect when the hidden iframe returns to the <strong>passive callback redirect_uri</strong>. If successfully store the obtained token.</li>
+			<li class="uninett-ul-li">Validate the response, and the user is now authenticated.</li>
+			<li class="uninett-ul-li">Use the access token to perform a CORS request to the userinfo endpoint.</li>
+			<li class="uninett-ul-li">Validate the response, and the user is now authenticated.</li>
+
+		</ul>
+
+		<li class="uninett-ul-li">
+
+			<p>If the user is not already having a single sign-on session at the identity provider, or somehow needs to interact with the identity provider (grant, consent or similar) the passive authentication request will fail. And then we fill the whole widget with information to the user that the user would need to authorize the widget to make it work. Like this:</p>
+
+			<p><img src="/media/screenshots/widget-authorize.png" class="img-responsive"></p>
+
+
+		</li>
+		<li class="uninett-ul-li">
+			<p>When the user clicks authorize, then open a Popup loader window. Load an authorization request in that window, and set the redirect uri of that request to point to the popup redirect_uri. The popup may look like this:</p>
+
+			<p><img src="/media/screenshots/widget-popup.png" class="img-responsive img-thumbnail"></p>
+
+		</li>
+		<li class="uninett-ul-li">When the user returns to the popup redirect_uri within the popup loader window, its script will automatically close the window. The federated widget will detect this and pick the <code>popup.location.href</code> (url) of the popup window. It will look for an oauth token in that response. If there is a valid token:</li>
+		<ul class="uninett-ul">
+			<li class="uninett-ul-li">Use the access token to perform a CORS request to the userinfo endpoint.</li>
+			<li class="uninett-ul-li">Validate the response, and the user is now authenticated.</li>
+		</ul>
+
+
+		<li class="uninett-ul-li">
+			<p>User should be successfully logged in to the widget, in a trusted way, without interferring with the main site.</p>
+
+			<p><img src="/media/screenshots/widget-success.png" class="img-responsive img-thumbnail"></p>
+
+		</li>
+
+	</ul>
+
+
+	<h3>The redirect_uri pages</h3>
+
+	<p>You would typically need three different <code>redirect_uri</code>-s.</p>
+
+	<h4>Regular redirect_uri</h4>
+	<p>The regular redirect_uri typically points to the federated widget it self. It is not used in this basic user flow, but it might be used</p>
+
+	<h4>Passive callback redirect_uri</h4>
+	<p>The passive callback redirect page is simply a blank page. Something like this:</p>
+
+
+{% highlight html %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Passive Callback</title>
+</head>
+<body>
+</body>
+</html>
+{% endhighlight %}
+
+
+
+	<h4>Popup redirect_uri</h4>
+	<p>An empty page, similar to the passive callback redirect_uri, but with a simple onload script that calls a function <code>popupCompleted()</code> at the opener window, the federated widget.</p>
+
+
+{% highlight html %}
+<script type="text/javascript">
+	window.onload = function() {
+		window.opener.popupCompleted();
+		setTimeout(function() {
+			window.close();
+		}, 200);
+	};
+</script>
+{% endhighlight %}
+	
+
+
+
 
 
 </div>
+
+
+
+
+
+<div class="bs-docs-section">
+	<h2 id="test" class="page-header">Demo</h2>
+
+	<p>TBA</p>
+
+</div>
+
+
+
+
+
 
