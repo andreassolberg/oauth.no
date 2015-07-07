@@ -25,20 +25,24 @@ lead: "Teknisk innblikk i Feide Connect på SUHS 2014"
 
 
 
-			<p>Getting started.</p>
 
+			<h2 id="" class="page-header">Getting started</h2>
 
 
 
 			<p>This is a guide to get started using JSO. </p>
 
-			<p>Pleae report to the [issue tracker]() if you discover errors in the documentation or the software.</p>
+			<p>Pleae report to the <a href="https://github.com/andreassolberg/jso/issues">issue tracker</a> if you discover errors in the documentation or the software.</p>
 
+			<p>If you discover errors or would like to contribute to this documentation, the documentation is <a href="https://github.com/andreassolberg/oauth.no/blob/master/site/jso.html">available on a public github repo</a>, and feel free to submit pull requests.</p>
+
+<!--
 
 			<p>If you want to use JSO together with Phonegap to support OAuth 2.0 in a hybrid web application, you may want to read the</p>
 
 			<p>* [JSO Phonegap Guide](README-Phonegap.md)</p>
 
+-->
 
 
 
@@ -57,7 +61,11 @@ bower install jso --save
 
 			<p>Alternatively, you may obtain the source from github by downloading or cloning the source.</p>
 
-			<p>Currently, JSO is not available through any CDN.</p>
+			<ul>
+				<li><a href="https://github.com/andreassolberg/jso/releases">Download release from source</a></li>
+			</ul>
+
+			<!-- <p>Currently, JSO is not available through any CDN.</p> -->
 
 
 
@@ -69,27 +77,74 @@ bower install jso --save
 			<h2 id="" class="page-header">Loading JSO</h2>
 
 
+
+
+
+
+
+<div>
+
+	<!-- Nav tabs -->
+	<ul class="nav nav-tabs" role="tablist">
+		<li role="presentation" class="active"><a href="#regular" aria-controls="regular" role="tab" data-toggle="tab">Regular script tag</a></li>
+		<li role="presentation"><a href="#amdbuild" aria-controls="amdbuild" role="tab" data-toggle="tab">AMD from build</a></li>
+		<li role="presentation"><a href="#amdsource" aria-controls="amdsource" role="tab" data-toggle="tab">AMD from source</a></li>
+		<li role="presentation"><a href="#component" aria-controls="component" role="tab" data-toggle="tab">Component</a></li>
+	</ul>
+
+	<!-- Tab panes -->
+	<div style="padding-top: 1em" class="tab-content">
+		<div role="tabpanel" class="tab-pane active" id="regular">
+
+
 			<p>Once you got JSO locally, you'll need to load the library in your web application.</p>
 
 {% highlight html %}
-<script type="text/javascript" src="bower_components/jso/build/jso.js"></script>
+<script type="text/javascript" src="bower_components/jso/dist/jso.min.js"></script>
 {% endhighlight %}
 	
 
-	<p>If you use [requirejs](http://require.js), you may load the library like this:</p>
+
+
+		</div>
+		<div role="tabpanel" class="tab-pane" id="amdbuild">
+
+			<p>If you use [requirejs](http://require.js), you may load the library like this:</p>
 
 {% highlight javascript %}
 define(function(require, exports, module) {
-	var JSO = require("bower/jso/build/jso");
+	var JSO = require("bower/jso/dist/jso");
 	// ...
 });
 {% endhighlight %}
 
-	<p>If you would like to fork the library, modify or contribute to development, you must use should use AMD loading, and refer to the `src/jso` version, like this:</p>
+
+
+		</div>
+		<div role="tabpanel" class="tab-pane" id="amdsource">
+
+
+			<p>If you would like to fork the library, modify or contribute to development, you must use should use AMD loading, and refer to the `src/jso` version, like this:</p>
 
 {% highlight javascript %}
 var JSO = require("bower/jso/src/jso");
 {% endhighlight %}
+
+
+
+		</div>
+		<div role="tabpanel" class="tab-pane" id="component">
+
+			<p>Instructions on how to use JSO with component is not yet available. Power users with experence with component: feel free to send a pulll request with some basic instructions.</p>
+
+		</div>
+	</div>
+
+</div>
+
+
+
+
 
 
 
