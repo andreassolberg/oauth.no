@@ -168,35 +168,50 @@ var jso = new JSO({
     client_id: "541950296471.apps.googleusercontent.com",
     redirect_uri: "http://bridge.uninett.no/jso/index.html",
     authorization: "https://accounts.google.com/o/oauth2/auth",
-    scopes: { request: ["https://www.googleapis.com/auth/userinfo.profile"]}
+    scopes: { 
+    	request: ["https://www.googleapis.com/auth/userinfo.profile"]
+    }
 });
 {% endhighlight %}
 
 
 <p>Here are more options to JSO:</p>
 
-<ul>
-<li>
-<code>providerID</code>: OPTIONAL This is just a name tag that is used to prefix data stored in the browser. It can be anything you'd like :)</li>
-<li>
-<code>client_id</code>: The client idenfier of your client that as trusted by the provider. As JSO uses the implicit grant flow, there is now use for a </li>
-<li>
-<code>redirect_uri</code>: OPTIONAL (may be needed by the provider). The URI that the user will be redirected back to when completed. This should be the same URL that the page is presented on.</li>
-<li>
-<code>presenttoken</code>: OPTIONAL How to present the token with the protected calls. Values can be <code>qs</code> (in query string) or <code>header</code> (default; in authorization header).</li>
-<li>
-<code>default_lifetime</code> : OPTIONAL Seconds with default lifetime of an access token. If set to <code>false</code>, it means permanent.</li>
-<li>
-<code>permanent_scope</code>: A scope that indicates that the lifetime of the access token is infinite. (not yet tested.)</li>
-<li>
-<code>isDefault</code>: Some OAuth providers does not support the <code>state</code> parameter. When this parameter is missing, the consumer does not which provider that is sending the access_token. If you only provide one provider config, or set isDefault to <code>true</code> for one of them, the consumer will assume this is the provider that sent the token.</li>
-<li>
-<code>scope</code>: For providers that does not support <code>state</code>: If state was not provided, and default provider contains a scope parameter we assume this is the one requested... Set this as the same list of scopes that you provide to <code>ensure_tokens</code>.</li>
-<li>
-<code>scopes.request</code>: Control what scopes are requested in the authorization request.</li>
-<li>
-<code>debug</code>: If debug is set to true, verbose logging will make it easier to debug problems with JSO.</li>
-</ul>
+
+<dl class="dl-horizontal">
+	<dt><code>providerID</code></dt>
+	<dd>OPTIONAL This is just a name tag that is used to prefix data stored in the browser. It can be anything you'd like :)</dd>
+
+	<dt><code>client_id</code></dt>
+	<dd>The client idenfier of your client that is trusted by the provider. As JSO uses the implicit grant flow, there is now use for a client secret.</dd>
+
+	<dt><code>redirect_uri</code></dt>
+	<dd>OPTIONAL (may be needed by the provider). The URI that the user will be redirected back to when completed. This should be the same URL that the page is presented on.</dd>
+
+	<dt><code>presenttoken</code></dt>
+	<dd>OPTIONAL How to present the token with the protected calls. Values can be <code>qs</code> (in query string) or <code>header</code> (default; in authorization header).</dd>
+
+	<dt><code>default_lifetime</code></dt>
+	<dd>OPTIONAL Seconds with default lifetime of an access token. If set to <code>false</code>, it means permanent.</dd>
+
+	<dt><code>permanent_scope</code></dt>
+	<dd>A scope that indicates that the lifetime of the access token is infinite. (not yet tested.)</dd>
+
+	<dt><code>isDefault</code></dt>
+	<dd>Some OAuth providers does not support the <code>state</code> parameter. When this parameter is missing, the consumer does not which provider that is sending the access_token. If you only provide one provider config, or set isDefault to <code>true</code> for one of them, the consumer will assume this is the provider that sent the token.</dd>
+
+	<dt><code>scope</code></dt>
+	<dd>For providers that does not support <code>state</code>: If state was not provided, and default provider contains a scope parameter we assume this is the one requested... Set this as the same list of scopes that you provide to <code>ensure_tokens</code>.</dd>
+
+	<dt><code>scopes.request</code></dt>
+	<dd>Control what scopes are requested in the authorization request.</dd>
+
+	<dt><code>debug</code></dt>
+	<dd>If debug is set to true, verbose logging will make it easier to debug problems with JSO.</dd>
+
+</dl>
+
+
 
 
 
@@ -214,6 +229,11 @@ var jso = new JSO({
 
 <p>Be aware to run the <code>callback()</code> function early, and before you <em>router</em> and before you start using the jso object to fetch data.</p>
 
+
+
+
+
+<!--
 <h2>
 <a id="user-content-configuration" class="anchor" href="#configuration" aria-hidden="true"><span class="octicon octicon-link"></span></a>Configuration</h2>
 
@@ -253,6 +273,12 @@ jso.ajax({
 
 
 <p>The <code>oauth</code> option property merges (and overrides) with the configuration of the <code>jso</code> object.</p>
+-->
+
+
+
+
+
 
 <h2>
 <a id="user-content-getting-the-token" class="anchor" href="#getting-the-token" aria-hidden="true"><span class="octicon octicon-link"></span></a>Getting the token</h2>
