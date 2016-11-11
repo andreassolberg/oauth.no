@@ -1,0 +1,63 @@
+{
+	"apiVersion": "extensions/v1beta1",
+	"kind": "Deployment",
+	"metadata": {
+		"name": "oauth.no"
+	},
+	"spec": {
+		"replicas": 1,
+		"strategy": {
+			"type": "RollingUpdate",
+			"rollingUpdate": {
+				"maxUnavailable": 0,
+				"maxSurge": 1
+			}
+		},
+		"template": {
+			"metadata": {
+				"labels": {
+					"app": "oauth.no",
+					"appid": "oauth.no"
+				}
+			},
+			"spec": {
+				"containers": [{
+					"name": "oauth.no",
+					"image": "uninettno/oauth.no:build-1",
+					"resources": {
+						"requests": {
+							"cpu": "10m",
+							"memory": "200Mi"
+						},
+						"limits": {
+							"memory": "800Mi"
+						}
+					},
+					"env": [{
+						"name": "HOST",
+						"value": "oauth.no"
+					}, {
+						"name": "TLS",
+						"value": "true"
+					}],
+					"imagePullPolicy": "Always",
+					"ports": [{
+						"containerPort": 80
+					}],
+					"volumeMounts": [{
+						"name": "oauth.no",
+						"mountPath": "/etc/secrets",
+						"readOnly": true
+					}]
+				}],
+				"restartPolicy": "Always",
+				"volumes": [{
+					"name": "oauth.no",
+					"secret": {
+						"secretName": "oauth.no"
+					}
+				}]
+			}
+		}
+	}
+}

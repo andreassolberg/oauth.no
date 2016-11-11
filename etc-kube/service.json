@@ -1,0 +1,22 @@
+{
+	"kind": "Service",
+	"apiVersion": "v1",
+	"metadata": {
+		"name": "oauth.no"
+	},
+	"spec": {
+		"selector": {
+			"appid": "oauth.no"
+		},
+		"ports": [{
+			"protocol": "TCP",
+			"port": 80,
+			"targetPort": 80
+		}, {
+			"protocol": "TCP",
+			"port": 443,
+			"targetPort": 443
+		}],
+		"type": "NodePort"
+	}
+}
