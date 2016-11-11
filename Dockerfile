@@ -1,11 +1,5 @@
 FROM nginx
 
-COPY site /srv/www/site
-COPY .bowerrc /srv/www/.bowerrc
-COPY _config.yml /srv/www/_config.yml
-COPY package.json /srv/www/package.json
-COPY bower.json /srv/www/bower.json
-
 WORKDIR /srv/www
 
 ADD default.conf /etc/nginx/conf.d/default.conf
@@ -24,6 +18,12 @@ RUN rm -rf /var/lib/apt/lists/*
 
 RUN gem install jekyll --no-ri --no-rdoc
 RUN gem install rouge --no-ri --no-rdoc
+
+COPY site /srv/www/site
+COPY .bowerrc /srv/www/.bowerrc
+COPY _config.yml /srv/www/_config.yml
+COPY package.json /srv/www/package.json
+COPY bower.json /srv/www/bower.json
 
 RUN npm install
 RUN node_modules/bower/bin/bower install --config.interactive=false -p --allow-root
