@@ -23,7 +23,7 @@
 			"spec": {
 				"containers": [{
 					"name": "oauth-no",
-					"image": "uninettno/oauth.no:build-14",
+					"image": "uninettno/oauth.no:build-15",
 					"resources": {
 						"requests": {
 							"cpu": "10m",
