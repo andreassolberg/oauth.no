@@ -2,7 +2,7 @@
 	"apiVersion": "extensions/v1beta1",
 	"kind": "Deployment",
 	"metadata": {
-		"name": "oauth.no"
+		"name": "oauth-no"
 	},
 	"spec": {
 		"replicas": 1,
@@ -16,14 +16,14 @@
 		"template": {
 			"metadata": {
 				"labels": {
-					"app": "oauth.no",
-					"appid": "oauth.no"
+					"app": "oauth-no",
+					"appid": "oauth-no"
 				}
 			},
 			"spec": {
 				"containers": [{
-					"name": "oauth.no",
-					"image": "uninettno/oauth.no:build-1",
+					"name": "oauth-no",
+					"image": "uninettno/oauth.no:build-23",
 					"resources": {
 						"requests": {
 							"cpu": "10m",
@@ -43,20 +43,9 @@
 					"imagePullPolicy": "Always",
 					"ports": [{
 						"containerPort": 80
-					}],
-					"volumeMounts": [{
-						"name": "oauth.no",
-						"mountPath": "/etc/secrets",
-						"readOnly": true
 					}]
 				}],
-				"restartPolicy": "Always",
-				"volumes": [{
-					"name": "oauth.no",
-					"secret": {
-						"secretName": "oauth.no"
-					}
-				}]
+				"restartPolicy": "Always"
 			}
 		}
 	}

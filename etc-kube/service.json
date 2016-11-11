@@ -2,11 +2,11 @@
 	"kind": "Service",
 	"apiVersion": "v1",
 	"metadata": {
-		"name": "oauth.no"
+		"name": "oauth-no"
 	},
 	"spec": {
 		"selector": {
-			"appid": "oauth.no"
+			"appid": "oauth-no"
 		},
 		"ports": [{
 			"protocol": "TCP",
